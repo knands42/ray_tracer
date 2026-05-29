@@ -6,6 +6,34 @@
 
 bool hit_sphere(const point3 &center, double radius, const ray &r)
 {
+    // Ray equation:
+    // P(t) = O + tD
+    //
+    // Sphere equation:
+    // dot(P - C, P - C) = radius²
+    //
+    // Where:
+    // O = ray origin
+    // D = ray direction
+    // C = sphere center
+    //
+    // This implementation defines:
+    // oc = C - O
+    //
+    // Therefore:
+    // P(t) - C = O + tD - C
+    //          = tD - (C - O)
+    //          = tD - oc
+    //
+    // Substitute into sphere equation:
+    // dot(tD - oc, tD - oc) = radius²
+    //
+    // Expanded:
+    // dot(D,D)t² - 2dot(D,oc)t + dot(oc,oc) - radius² = 0
+    //
+    // Quadratic form:
+    // At² + Bt + C = 0
+
     auto oc = center - r.origin();
     auto a = dot(r.direction(), r.direction());
     auto b = -2 * dot(r.direction(), oc);

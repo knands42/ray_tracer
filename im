@@ -1,6 +1,0 @@
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/kadx/Projects/ray-tracing-one-weekend/build
-[ 33%] Building CXX object CMakeFiles/ray_tracer.dir/src/main.cpp.o
-[ 66%] Linking CXX executable ray_tracer
-[100%] Built target ray_tracer
