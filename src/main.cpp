@@ -6,45 +6,18 @@
 
 double hit_sphere(const point3 &sphere_center, double radius, const ray &r)
 {
-    // Ray equation:
-    // P(t) = O + tD
-    //
-    // Sphere equation:
-    // dot(P - C, P - C) = radius²
-    //
-    // Where:
-    // O = ray origin
-    // D = ray direction
-    // C = sphere center
-    //
-    // This implementation defines:
-    // oc = C - O
-    //
-    // Therefore:
-    // P(t) - C = O + tD - C
-    //          = tD - (C - O)
-    //          = tD - oc
-    //
-    // Substitute into sphere equation:
-    // dot(tD - oc, tD - oc) = radius²
-    //
-    // Expanded:
-    // dot(D,D)t² - 2dot(D,oc)t + dot(oc,oc) - radius² = 0
-    //
-    // Quadratic form:
-    // At² + Bt + C = 0
-
     auto oc = sphere_center - r.origin();
-    auto a = dot(r.direction(), r.direction());
-    auto b = -2 * dot(r.direction(), oc);
-    auto c = dot(oc, oc) - (radius * radius);
-    auto discriminant = (b * b) - (4 * a * c);
+    auto a = r.direction().length_squared();
+    auto h = dot(r.direction(), oc);
+    auto c = oc.length_squared() - radius*radius;
+    auto discriminant = h*h - a*c;
 
     if (discriminant < 0)
     {
         return -1.0;
     }
-    return (-b - std::sqrt(discriminant)) / (2.0 * a);
+
+    return (h - std::sqrt(discriminant)) / a;
 }
 
 color ray_color(const ray &r, const point3 &sphere_center)
