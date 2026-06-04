@@ -8,7 +8,7 @@ public:
     int image_width = 400; // Rendered image width in pixel count
     vec3 viewport_center = vec3(0, 0, -1);
 
-    void render(const hittable &world)
+    void render(const hittable &world) const
     {
         std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 

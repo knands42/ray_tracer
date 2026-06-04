@@ -1,20 +1,34 @@
 #pragma once
 
 #include "rtweekend.h"
-class interval {
+
+class interval
+{
 public:
-  double min, max;
+    double min, max;
 
-  interval() : min(+infinity), max(-infinity) {}
-  interval(double min, double max) : min(min), max(max) {}
+    interval() : min(+infinity), max(-infinity)
+    {
+    }
 
-  double size() const { return max - min; }
+    interval(double min, double max) : min(min), max(max)
+    {
+    }
 
-  bool contains(double x) const { return min <= x && x <= max; }
+    double size() const { return max - min; }
 
-  bool surrounds(double x) const { return min < x && x < max; }
+    bool contains(double x) const { return min <= x && x <= max; }
 
-  static const interval empty, universe;
+    bool surrounds(double x) const { return min < x && x < max; }
+
+    bool clamp(double x) const
+    {
+        if (x < min) return min;
+        if (x > max) return max;
+        return x;
+    }
+
+    static const interval empty, universe;
 };
 
 const interval interval::empty = interval(+infinity, -infinity);
