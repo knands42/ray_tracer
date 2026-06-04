@@ -9,6 +9,7 @@ add_executable(ray_tracer
         src/vec3.h
         src/hittable.h
         src/sphere.h
+        src/color.cpp
 )
 
 add_custom_target(run
