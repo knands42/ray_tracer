@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(ray_tracer
         src/main.cpp
         src/vec3.h
+        src/hittable.h
+        src/sphere.h
 )
 
 add_custom_target(run
