@@ -1,5 +1,6 @@
 #pragma once
 #include "rtweekend.h"
+#include "vec3.h"
 
 class camera
 {
@@ -84,7 +85,7 @@ private:
         return ray(ray_origin, ray_direction);
     }
 
-    vec3 sample_square() const
+    static vec3 sample_square()
     {
         // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit square.
         return vec3(random_double() - 0.5, random_double() - 0.5, 0);
@@ -92,11 +93,12 @@ private:
 
     static color ray_color(const ray &r, const hittable &world)
     {
-        hit_record rec;
+        hit_record hit_rec;
 
-        if (world.hit(r, interval(0, infinity), rec))
+        if (world.hit(r, interval(0, infinity), hit_rec))
         {
-            return 0.5 * (rec.normal + color(1, 1, 1));
+            vec3 direction = random_on_hemisphere(hit_rec.normal);
+            return 0.5 * ray_color(ray(hit_rec.p, direction), world);
         }
 
         vec3 unit_direction = unit_vector(r.direction());

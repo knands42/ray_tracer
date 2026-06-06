@@ -10,7 +10,7 @@ public:
     {
     }
 
-    bool hit(const ray &r, interval ray_t, hit_record &rec) const override
+    bool hit(const ray &r, interval ray_t, hit_record &hit_rec) const override
     {
         vec3 oc = center - r.origin();
         auto a = r.direction().length_squared();
@@ -35,10 +35,10 @@ public:
             }
         }
 
-        rec.t = root;
-        rec.p = r.at(rec.t);
-        vec3 outward_normal = (rec.p - center) / radius;
-        rec.set_face_normal(r, outward_normal);
+        hit_rec.t = root;
+        hit_rec.p = r.at(hit_rec.t);
+        vec3 outward_normal = (hit_rec.p - center) / radius;
+        hit_rec.set_face_normal(r, outward_normal);
 
         return true;
     }
