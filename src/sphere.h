@@ -10,20 +10,20 @@ public:
     {
     }
 
-    bool hit(const ray &r, interval ray_t, hit_record &hit_rec) const override
+    auto hit(const ray &r, const interval ray_t, hit_record &hit_rec) const -> bool override
     {
-        vec3 oc = center - r.origin();
+        const vec3 from_camera_to_center = center - r.origin();
         auto a = r.direction().length_squared();
-        auto h = dot(r.direction(), oc);
-        auto c = oc.length_squared() - radius * radius;
+        auto h = dot(r.direction(), from_camera_to_center);
+        auto c = from_camera_to_center.length_squared() - (radius * radius);
 
-        auto discriminant = h * h - a * c;
+        const auto discriminant = (h * h) - (a * c);
         if (discriminant < 0)
         {
             return false;
         }
 
-        auto discriminant_sqrt = std::sqrt(discriminant);
+        const auto discriminant_sqrt = std::sqrt(discriminant);
 
         auto root = (h - discriminant_sqrt) / a;
         if (!ray_t.surrounds(root))
@@ -37,7 +37,7 @@ public:
 
         hit_rec.t = root;
         hit_rec.p = r.at(hit_rec.t);
-        vec3 outward_normal = (hit_rec.p - center) / radius;
+        const vec3 outward_normal = (hit_rec.p - center) / radius;
         hit_rec.set_face_normal(r, outward_normal);
 
         return true;
