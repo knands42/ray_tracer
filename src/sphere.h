@@ -23,12 +23,12 @@ public:
             return false;
         }
 
-        auto sqrtd = std::sqrt(discriminant);
+        auto discriminant_sqrt = std::sqrt(discriminant);
 
-        auto root = (h - sqrtd) / a;
+        auto root = (h - discriminant_sqrt) / a;
         if (!ray_t.surrounds(root))
         {
-            root = (h + sqrtd) / a;
+            root = (h + discriminant_sqrt) / a;
             if (!ray_t.surrounds(root))
             {
                 return false;

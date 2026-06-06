@@ -96,19 +96,23 @@ inline auto cross(const vec3 &vec1, const vec3 &vec2) -> vec3 {
 
 inline auto unit_vector(const vec3 &v) -> vec3 { return v / v.length(); }
 
+/// Returns a random unit vector uniformly distributed over the full unit sphere.
+/// Uses rejection sampling: picks random points in [-1,1]³ and normalizes those inside the sphere.
 inline auto random_unit_vector() -> vec3 {
   while (true) {
     auto p = vec3::random(-1, 1);
-    auto lensq = p.length_squared();
-    auto minimun = 1e-160; // avoid underflow of zeros
-    if (minimun < lensq && lensq <= 1) {
-      return p / sqrt(lensq);
+    auto p_squared_length = p.length_squared();
+    auto minimum = 1e-160; // avoid underflow of zeros
+    if (minimum < p_squared_length && p_squared_length <= 1) {
+      return p / sqrt(p_squared_length);
     }
   }
 }
 
+/// Returns a random unit vector on the same hemisphere as `normal` (dot product > 0).
+/// Guarantees the scattered direction always points away from the surface.
 inline auto random_on_hemisphere(const vec3& normal) -> vec3 {
-    vec3 on_unit_sphere = random_unit_vector();
+    const vec3 on_unit_sphere = random_unit_vector();
     if (dot(on_unit_sphere, normal) > 0.0) {
         return on_unit_sphere;
     } 

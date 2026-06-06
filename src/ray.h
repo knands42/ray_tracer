@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ray.h"
+
 class ray {
 public:
   ray() {}
