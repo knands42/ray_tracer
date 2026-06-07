@@ -1,0 +1,2 @@
+- [ ] Refactor simple-ray-tracer to cpp PascalCase style
+- [ ] Fix simple-ray-tracer clang-tidy

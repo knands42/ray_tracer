@@ -1,21 +1,18 @@
 # Ray Tracer
 
+This project is aimed at learning ray tracing following different resources.
+
+There are submodules for each of the projects.
+- [Simple Ray Tracer](./simple-ray-tracer/README.md) -> Ray Tracer in One Weekend book
+- [ImGui Ray Tracer](./imgui-ray-tracer/README.md) -> The Cherno playlist on Youtube
+
+
 ## Showcase
 
-<img src="./assets/image.png" alt="Showcase" />
+### Simple Ray Tracer
 
-## Running the project
+![Simple Ray Tracer](./simple-ray-tracer/assets/image.png)
 
-### Pre-requirements
+### ImGui Ray Tracer
 
-- CMake
-
-```shell
-cmake -B build && cmake --build build && ./build/ray_tracer > image.ppm && convert image.ppm assets/image.png
-```
-
-Or just create an alias:
-
-```shell
-alias run='cmake -B build && cmake --build build && ./build/ray_tracer > image.ppm && convert image.ppm assets/image.png'
-```
+![ImGui Ray Tracer](./imgui-ray-tracer/assets/image.png)
