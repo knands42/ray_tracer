@@ -1,9 +1,12 @@
 # Improvements & TODO Roadmap
 
+## Completed
+- [x] **Refactor:** Standardize `simple-ray-tracer` naming conventions to `PascalCase`.
+- [x] **Linting:** Resolve `clang-tidy` warnings in `simple-ray-tracer`.
+- [x] **Documentation:** Finalize technical notes on performance optimizations applied to `simple-ray-tracer` (e.g., shadow acne).
+
 ## Current in Progress
-- [ ] **Refactor:** Standardize `simple-ray-tracer` naming conventions to `PascalCase`.
-- [ ] **Linting:** Resolve `clang-tidy` warnings in `simple-ray-tracer`.
-- [ ] **Documentation:** Finalize technical notes on performance optimizations applied to `simple-ray-tracer` (e.g., shadow acne).
+- [ ]
 
 ## Backlog
 - [ ] Add ray tracing in C with `raylib`.

@@ -58,7 +58,7 @@ target_link_libraries(imgui_ray_tracer PRIVATE
         glfw
 )
 
-add_custom_target(run
+add_custom_target(run_imgui_ray_tracer
         COMMAND $<TARGET_FILE:imgui_ray_tracer>
         DEPENDS imgui_ray_tracer
 )
