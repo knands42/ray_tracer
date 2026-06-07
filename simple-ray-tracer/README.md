@@ -20,11 +20,11 @@ sudo pacman -S cmake imagemagick
 ### Running
 
 ```shell
-cmake -B build && cmake --build build && ./build/ray_tracer > image.ppm && convert image.ppm assets/image.png
+cmake -B build && cmake --build build && ./build/simple_ray_tracer > image.ppm && convert image.ppm assets/image.png
 ```
 
 Or just create an alias:
 
 ```shell
-alias run='cmake -B build && cmake --build build && ./build/ray_tracer > image.ppm && convert image.ppm assets/image.png'
+alias run='cmake -B build && cmake --build build && ./build/simple_ray_tracer > image.ppm && convert image.ppm assets/image.png'
 ```

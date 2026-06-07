@@ -6,13 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(simple_ray_tracer
         src/main.cpp
-        src/vec3.h
-        src/hittable.h
-        src/sphere.h
-        src/color.h
+        src/Vec3.h
+        src/Hittable.h
+        src/Sphere.h
+        src/Color.h
 )
 
-add_custom_target(run
+add_custom_target(run_simple_ray_tracer
         COMMAND $<TARGET_FILE:simple_ray_tracer>
         DEPENDS simple_ray_tracer
 )
