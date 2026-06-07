@@ -1,6 +1,19 @@
 #include "Renderer.h"
 #include <chrono>
 
+namespace Utils
+{
+    static uint32_t ConvertToRGBA(glm::vec4 &color)
+    {
+        auto r = static_cast<uint8_t>(color.r * 255.0f);
+        auto g = static_cast<uint8_t>(color.g * 255.0f);
+        auto b = static_cast<uint8_t>(color.b * 255.0f);
+        auto a = static_cast<uint8_t>(color.a * 255.0f);
+
+        return (a << 24) | (b << 16) | (g << 8) | r;
+    }
+}
+
 Renderer::Renderer(uint32_t viewPortWidth, uint32_t viewPortHeight)
 {
     m_ImageData.resize(static_cast<size_t>(viewPortWidth) * static_cast<size_t>(viewPortHeight));
@@ -19,7 +32,10 @@ void Renderer::Render()
                 static_cast<float>(y) / static_cast<float>(m_FinalImage->height)
             };
             coord = coord * 2.0f - 1.0f; // [-1; 1]
-            m_ImageData[x + y * m_FinalImage->width] = PerPixel(coord);
+
+            glm::vec4 color = PerPixel(coord);
+            color = glm::clamp(color, glm::vec4(0.0f), glm::vec4(1.0f));
+            m_ImageData[x + y * m_FinalImage->width] = Utils::ConvertToRGBA(color);
         }
     }
 
@@ -43,27 +59,31 @@ void Renderer::OnResize(uint32_t width, uint32_t height)
     m_ImageData.resize(width * height);
 }
 
-uint32_t Renderer::PerPixel(glm::vec2 coord)
+glm::vec4 Renderer::PerPixel(glm::vec2 coord)
 {
-    glm::vec3 rayOrigin(0.0f, 0.0f, -2.0f);
-    glm::vec3 projectionPlane(coord.x, coord.y, 0.0f);
-    glm::vec3 rayDirection = glm::normalize(projectionPlane - rayOrigin);
+    glm::vec3 rayOrigin(0.0f, 0.0f, 2.0f);
+    glm::vec3 rayDirection(coord.x, coord.y, -1.0f);
+    glm::vec3 sphereCenter = {0.0f, 0.0f, -1.0f};
+    glm::vec3 oc = sphereCenter - rayOrigin;
 
     float radius = 0.5f;
-    rayDirection = glm::normalize(rayDirection);
 
     float a = glm::dot(rayDirection, rayDirection);
-    float b = 2.0f * glm::dot(rayOrigin, rayDirection);
-    float c = glm::dot(rayOrigin, rayOrigin) - radius * radius;
+    float b = -2.0f * glm::dot(oc, rayDirection);
+    float c = glm::dot(oc, oc) - (radius * radius);
 
     float discriminant = b * b - 4.0f * a * c;
-    if (discriminant >= 0.0f)
+    if (discriminant < 0.0f)
     {
-        float sqrtDiscriminant = glm::sqrt(discriminant);
-        float t0 = (-b - sqrtDiscriminant) / (2.0f * a);
-        float t1 = (-b + sqrtDiscriminant) / (2.0f * a);
-        if (t0 >= 0.0f || t1 >= 0.0f) return 0xffff00ff;
+        return {0, 0, 0, 1};
     }
 
-    return 0xff000000;
+    float sqrtDiscriminant = glm::sqrt(discriminant);
+    float t0 = (-b - sqrtDiscriminant) / (2.0f * a);
+    float t1 = (-b + sqrtDiscriminant) / (2.0f * a);
+
+    if (t0 >= 0.0f || t1 >= 0.0f)
+    {
+        return {1, 0, 1, 1.0f};
+    }
 }

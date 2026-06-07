@@ -13,10 +13,10 @@ public:
 
     auto hit(const Ray &ray, const Interval root_interval, HitRecord &hit_rec) const -> bool override
     {
-        const Vec3 from_camera_to_center = center - ray.origin();
+        const Vec3 from_origin_to_sphere_center = center - ray.origin();
         const auto a = ray.direction().length_squared();
-        const auto h = dot(ray.direction(), from_camera_to_center);
-        const auto c = from_camera_to_center.length_squared() - (radius * radius);
+        const auto h = dot(ray.direction(), from_origin_to_sphere_center);
+        const auto c = from_origin_to_sphere_center.length_squared() - (radius * radius);
 
         const auto discriminant = (h * h) - (a * c);
         if (discriminant < 0)
