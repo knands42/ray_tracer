@@ -13,7 +13,7 @@ public:
     {
     }
 
-    Vec3(const double e0, const double e1, const double e2) : e{e0, e1, e2}
+    Vec3(const double x, const double y, const double z) : e{x, y, z}
     {
     }
 
@@ -48,9 +48,9 @@ public:
     /*
      * Same as dot product
      */
-    [[nodiscard]] double length_squared() const
+    [[nodiscard]] auto length_squared() const -> double
     {
-        return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
+        return (e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]);
     }
 
     static auto random() -> Vec3
@@ -71,50 +71,50 @@ using point3 = Vec3;
 
 // Vector Utility Functions
 
-inline auto operator<<(std::ostream &out, const Vec3 &v) -> std::ostream &
+inline auto operator<<(std::ostream &out, const Vec3 &vec) -> std::ostream &
 {
-    return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
+    return out << vec.e[0] << ' ' << vec.e[1] << ' ' << vec.e[2];
 }
 
-inline auto operator+(const Vec3 &u, const Vec3 &v) -> Vec3
+inline auto operator+(const Vec3 &vecU, const Vec3 &vecV) -> Vec3
 {
-    return {u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]};
+    return {vecU.e[0] + vecV.e[0], vecU.e[1] + vecV.e[1], vecU.e[2] + vecV.e[2]};
 }
 
-inline auto operator-(const Vec3 &u, const Vec3 &v) -> Vec3
+inline auto operator-(const Vec3 &vecU, const Vec3 &vecV) -> Vec3
 {
-    return {u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]};
+    return {vecU.e[0] - vecV.e[0], vecU.e[1] - vecV.e[1], vecU.e[2] - vecV.e[2]};
 }
 
-inline auto operator*(const Vec3 &u, const Vec3 &v) -> Vec3
+inline auto operator*(const Vec3 &vecU, const Vec3 &vecV) -> Vec3
 {
-    return {u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]};
+    return {vecU.e[0] * vecV.e[0], vecU.e[1] * vecV.e[1], vecU.e[2] * vecV.e[2]};
 }
 
-inline auto operator*(double t, const Vec3 &v) -> Vec3
+inline auto operator*(double scalar, const Vec3 &vec) -> Vec3
 {
-    return {t * v.e[0], t * v.e[1], t * v.e[2]};
+    return {scalar * vec.e[0], scalar * vec.e[1], scalar * vec.e[2]};
 }
 
-inline auto operator*(const Vec3 &v, double t) -> Vec3 { return t * v; }
+inline auto operator*(const Vec3 &vec, const double scalar) -> Vec3 { return scalar * vec; }
 
-inline auto operator/(const Vec3 &v, double t) -> Vec3 { return (1 / t) * v; }
+inline auto operator/(const Vec3 &vec, const double scaler) -> Vec3 { return (1 / scaler) * vec; }
 
-inline auto dot(const Vec3 &u, const Vec3 &v) -> double
+inline auto dot(const Vec3 &vecU, const Vec3 &vecV) -> double
 {
-    return (u.e[0] * v.e[0]) + (u.e[1] * v.e[1]) + (u.e[2] * v.e[2]);
+    return (vecU.e[0] * vecV.e[0]) + (vecU.e[1] * vecV.e[1]) + (vecU.e[2] * vecV.e[2]);
 }
 
-inline auto cross(const Vec3 &vec1, const Vec3 &vec2) -> Vec3
+inline auto cross(const Vec3 &vecU, const Vec3 &vecV) -> Vec3
 {
     return {
-        (vec1.e[1] * vec2.e[2]) - (vec1.e[2] * vec2.e[1]),
-        (vec1.e[2] * vec2.e[0]) - (vec1.e[0] * vec2.e[2]),
-        (vec1.e[0] * vec2.e[1]) - (vec1.e[1] * vec2.e[0])
+        (vecU.e[1] * vecV.e[2]) - (vecU.e[2] * vecV.e[1]),
+        (vecU.e[2] * vecV.e[0]) - (vecU.e[0] * vecV.e[2]),
+        (vecU.e[0] * vecV.e[1]) - (vecU.e[1] * vecV.e[0])
     };
 }
 
-inline auto unit_vector(const Vec3 &v) -> Vec3 { return v / v.length(); }
+inline auto unit_vector(const Vec3 &vec) -> Vec3 { return vec / vec.length(); }
 
 /// Returns a random unit vector uniformly distributed over the full unit sphere.
 /// Uses rejection sampling: picks random points in [-1,1]³ and normalizes those inside the sphere.
@@ -124,7 +124,7 @@ inline auto random_unit_vector() -> Vec3
     {
         auto vec = Vec3::random(-1, 1);
         const auto p_squared_length = vec.length_squared();
-        if (auto minimum = 1e-160; minimum < p_squared_length && p_squared_length <= 1)
+        if (constexpr auto minimum = 1e-160; minimum < p_squared_length && p_squared_length <= 1)
         {
             return vec / sqrt(p_squared_length);
         }
@@ -133,10 +133,10 @@ inline auto random_unit_vector() -> Vec3
 
 /// Returns a random unit vector on the same hemisphere as `normal` (dot product > 0).
 /// Guarantees the scattered direction always points away from the surface.
-inline auto random_on_hemisphere(const Vec3 &normal) -> Vec3
+inline auto random_on_hemisphere(const Vec3 &normalVec) -> Vec3
 {
     const Vec3 on_unit_sphere = random_unit_vector();
-    if (dot(on_unit_sphere, normal) > 0.0)
+    if (dot(on_unit_sphere, normalVec) > 0.0)
     {
         return on_unit_sphere;
     }

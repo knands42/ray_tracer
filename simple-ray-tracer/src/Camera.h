@@ -106,14 +106,14 @@ private:
             return 0.5 * ray_color(Ray(hit_rec.point, direction), depth - 1, world);
         }
 
-        Vec3 unit_direction = unit_vector(r.direction());
+        const Vec3 unit_direction = unit_vector(r.direction());
         // Linear interpolation
         // blendedValue=(1−a)⋅startValue+a⋅endValue
         // or
         // blendedValue=startValue + a * (endValue - startValue)
-        auto a = 0.5 * (unit_direction.y() + 1.0);
-        auto startValue = color(1.0, 1.0, 1.0); // white
-        auto endValue = color(0.5, 0.7, 1.0); // blue
+        const auto a = 0.5 * (unit_direction.y() + 1.0);
+        const auto startValue = color(1.0, 1.0, 1.0); // white
+        const auto endValue = color(0.5, 0.7, 1.0); // blue
 
         return (1.0 - a) * startValue + a * endValue;
     }
