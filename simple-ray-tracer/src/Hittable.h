@@ -1,14 +1,19 @@
 # pragma once
 
+#include <memory>
+
 #include "Interval.h"
 #include "Ray.h"
 #include "Vec3.h"
 
-class hit_record
+class Material;
+
+class HitRecord
 {
 public:
     point3 point;
     Vec3 normal;
+    std::shared_ptr<Material> mat;
     double t{};
     bool front_face{};
 
@@ -24,5 +29,5 @@ class Hittable
 public:
     virtual ~Hittable() = default;
 
-    virtual auto hit(const Ray &ray, Interval ray_t, hit_record &rec) const -> bool = 0;
+    virtual auto hit(const Ray &ray, Interval ray_t, HitRecord &rec) const -> bool = 0;
 };

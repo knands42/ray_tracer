@@ -8,9 +8,10 @@ class Sphere : public Hittable
 public:
     Sphere(const point3 &center, double radius) : center(center), radius(std::fmax(0, radius))
     {
+        // TODO: Initialize the material pointer
     }
 
-    auto hit(const Ray &ray, const Interval ray_t, hit_record &hit_rec) const -> bool override
+    auto hit(const Ray &ray, const Interval root_interval, HitRecord &hit_rec) const -> bool override
     {
         const Vec3 from_camera_to_center = center - ray.origin();
         const auto a = ray.direction().length_squared();
@@ -26,10 +27,10 @@ public:
         const auto discriminant_sqrt = std::sqrt(discriminant);
 
         auto root = (h - discriminant_sqrt) / a;
-        if (!ray_t.surrounds(root))
+        if (!root_interval.surrounds(root))
         {
             root = (h + discriminant_sqrt) / a;
-            if (!ray_t.surrounds(root))
+            if (!root_interval.surrounds(root))
             {
                 return false;
             }

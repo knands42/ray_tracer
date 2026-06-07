@@ -23,7 +23,7 @@ public:
             std::clog << "\rScanline remaining: " << (image_height - j) << std::flush;
             for (int i = 0; i < image_width; i++)
             {
-                color pixel_color(0, 0, 0);
+                Color pixel_color(0, 0, 0);
                 for (int sample = 0; sample < samples_per_pixel; sample++)
                 {
                     Ray ray = get_ray(i, j);
@@ -93,14 +93,14 @@ private:
         return {random_double() - 0.5, random_double() - 0.5, 0};
     }
 
-    static auto ray_color(const Ray &r, int depth, const Hittable &world) -> color
+    static auto ray_color(const Ray &r, int depth, const Hittable &world) -> Color
     {
         if (depth <= 0)
         {
             return {0, 0, 0};
         }
 
-        if (hit_record hit_rec; world.hit(r, Interval(0.001, infinity), hit_rec))
+        if (HitRecord hit_rec; world.hit(r, Interval(0.001, infinity), hit_rec))
         {
             Vec3 direction = hit_rec.normal + random_unit_vector();
             return 0.3 * ray_color(Ray(hit_rec.point, direction), depth - 1, world);
@@ -112,8 +112,8 @@ private:
         // or
         // blendedValue=startValue + a * (endValue - startValue)
         const auto a = 0.5 * (unit_direction.y() + 1.0);
-        const auto startValue = color(1.0, 1.0, 1.0); // white
-        const auto endValue = color(0.5, 0.7, 1.0); // blue
+        const auto startValue = Color(1.0, 1.0, 1.0); // white
+        const auto endValue = Color(0.5, 0.7, 1.0); // blue
 
         return (1.0 - a) * startValue + a * endValue;
     }

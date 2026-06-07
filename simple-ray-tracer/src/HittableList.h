@@ -24,9 +24,9 @@ public:
         objects.push_back(object);
     }
 
-    auto hit(const Ray &ray, const Interval ray_t, hit_record &rec) const -> bool override
+    auto hit(const Ray &ray, const Interval ray_t, HitRecord &rec) const -> bool override
     {
-        hit_record temp_rec;
+        HitRecord temp_rec;
         bool hit_anything = false;
         auto closest_so_far = ray_t.max;
 

@@ -3,7 +3,7 @@
 #include "Interval.h"
 #include "Vec3.h"
 
-using color = Vec3;
+using Color = Vec3;
 
 inline double linear_to_gamma(double linear_component)
 {
@@ -14,7 +14,7 @@ inline double linear_to_gamma(double linear_component)
     return 0;
 }
 
-inline void write_color(std::ostream &out, const color &pixel_color)
+inline void write_color(std::ostream &out, const Color &pixel_color)
 {
     auto red = pixel_color.x();
     auto green = pixel_color.y();
