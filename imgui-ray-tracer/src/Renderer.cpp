@@ -35,7 +35,7 @@ void Renderer::Render()
 
             glm::vec4 color = PerPixel(coord);
             color = glm::clamp(color, glm::vec4(0.0f), glm::vec4(1.0f));
-            m_ImageData[x + y * m_FinalImage->width] = Utils::ConvertToRGBA(color);
+            m_ImageData[x + (y * m_FinalImage->width)] = Utils::ConvertToRGBA(color);
         }
     }
 
@@ -63,7 +63,7 @@ glm::vec4 Renderer::PerPixel(glm::vec2 coord)
 {
     glm::vec3 rayOrigin(0.0f, 0.0f, 2.0f);
     glm::vec3 rayDirection(coord.x, coord.y, -1.0f);
-    glm::vec3 sphereCenter = {0.0f, 0.0f, -1.0f};
+    glm::vec3 sphereCenter = {0.0f, 0.0f, 0.0f};
     glm::vec3 oc = sphereCenter - rayOrigin;
 
     float radius = 0.5f;
