@@ -78,12 +78,14 @@ glm::vec4 Renderer::PerPixel(glm::vec2 coord)
         return {0, 0, 0, 1};
     }
 
-    float sqrtDiscriminant = glm::sqrt(discriminant);
-    float t0 = (-b - sqrtDiscriminant) / (2.0f * a);
-    float t1 = (-b + sqrtDiscriminant) / (2.0f * a);
+    const float sqrtDiscriminant = glm::sqrt(discriminant);
+    const float t0 = (-b + sqrtDiscriminant) / (2.0f * a);
+    const float closestT = (-b - sqrtDiscriminant) / (2.0f * a);
 
-    if (t0 >= 0.0f || t1 >= 0.0f)
-    {
-        return {1, 0, 1, 1.0f};
-    }
+    glm::vec3 h0 = rayOrigin + (t0 * rayDirection);
+    glm::vec3 closestHit = rayOrigin + (closestT * rayDirection);
+
+    glm::vec3 sphereColor(1, 0, 1);
+    sphereColor = closestHit;
+    return {sphereColor, 1.0f};
 }
