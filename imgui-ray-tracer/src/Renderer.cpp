@@ -1,20 +1,21 @@
 #include "Renderer.h"
 #include <chrono>
+#include <utility>
 
 namespace Utils
 {
-    static uint32_t ConvertToRGBA(glm::vec4 &color)
+    static auto ConvertToRGBA(const glm::vec4 &color) -> uint32_t
     {
-        auto r = static_cast<uint8_t>(color.r * 255.0f);
-        auto g = static_cast<uint8_t>(color.g * 255.0f);
-        auto b = static_cast<uint8_t>(color.b * 255.0f);
-        auto a = static_cast<uint8_t>(color.a * 255.0f);
+        const auto r = static_cast<uint8_t>(color.r * 255.0f);
+        const auto g = static_cast<uint8_t>(color.g * 255.0f);
+        const auto b = static_cast<uint8_t>(color.b * 255.0f);
+        const auto a = static_cast<uint8_t>(color.a * 255.0f);
 
         return (a << 24) | (b << 16) | (g << 8) | r;
     }
 }
 
-Renderer::Renderer(uint32_t viewPortWidth, uint32_t viewPortHeight)
+Renderer::Renderer(const uint32_t viewPortWidth, const uint32_t viewPortHeight)
 {
     m_ImageData.resize(static_cast<size_t>(viewPortWidth) * static_cast<size_t>(viewPortHeight));
 }
@@ -34,7 +35,7 @@ void Renderer::Render()
             coord = coord * 2.0f - 1.0f; // [-1; 1]
 
             glm::vec4 color = PerPixel(coord);
-            color = glm::clamp(color, glm::vec4(0.0f), glm::vec4(1.0f));
+            color = glm::clamp(color, glm::vec4(0.0), glm::vec4(1.0f));
             m_ImageData[x + (y * m_FinalImage->width)] = Utils::ConvertToRGBA(color);
         }
     }
@@ -43,11 +44,11 @@ void Renderer::Render()
     m_LastRenderTime = std::chrono::duration<float, std::milli>(end - start).count();
 }
 
-void Renderer::OnResize(uint32_t width, uint32_t height)
+void Renderer::OnResize(const uint32_t width, const uint32_t height)
 {
     if (m_FinalImage)
     {
-        if (m_FinalImage->width == static_cast<int>(width) && m_FinalImage->height == static_cast<int>(height))
+        if (std::cmp_equal(m_FinalImage->width ,width) && std::cmp_equal(m_FinalImage->height ,height))
         {
             return;
         }
@@ -59,7 +60,7 @@ void Renderer::OnResize(uint32_t width, uint32_t height)
     m_ImageData.resize(width * height);
 }
 
-glm::vec4 Renderer::PerPixel(glm::vec2 coord)
+auto Renderer::PerPixel(glm::vec2 coord) const -> glm::vec4
 {
     glm::vec3 rayOrigin(0.0f, 0.0f, 2.0f);
     glm::vec3 rayDirection(coord.x, coord.y, -1.0f);
@@ -86,11 +87,9 @@ glm::vec4 Renderer::PerPixel(glm::vec2 coord)
     glm::vec3 closestHit = rayOrigin + (closestT * rayDirection);
     glm::vec3 normal = glm::normalize(closestHit - sphereCenter);
 
-    glm::vec3 lightDir = glm::normalize(glm::vec3(-1, -1, -1));
-
-    float d = glm::max(glm::dot(normal, -lightDir), 0.0f);
+    float directionalLight = glm::max(glm::dot(normal, -m_LightDir), 0.0f);
 
     glm::vec3 sphereColor(1, 0, 1);
-    sphereColor *= d;
+    sphereColor *= directionalLight;
     return {sphereColor, 1.0f};
 }

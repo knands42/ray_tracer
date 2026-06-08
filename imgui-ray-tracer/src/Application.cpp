@@ -117,15 +117,13 @@ void Application::DrawOnUI()
 {
     ImGui::Begin("Settings");
     ImGui::Text("Last render: %.3fms", m_Renderer->GetLastRenderTime());
-    if (ImGui::Button("Render"))
-    {
-        m_Renderer->Render();
-    }
+    static float lightDir[3] = {-1.0f, -1.0f, -1.0f};
+    ImGui::InputFloat3("Light Dir", lightDir, "%.1f");
+    m_Renderer->SetLightDir(lightDir[0], lightDir[1], lightDir[2]);
     ImGui::End();
 
     ImGui::Begin("Viewport");
     Render();
-
     auto finalImage = m_Renderer->GetFinalImage();
     ImGui::Image(m_TextureID, ImVec2(finalImage->width, finalImage->height),
                  ImVec2(0, 1), ImVec2(1, 0));

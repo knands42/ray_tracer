@@ -1,5 +1,4 @@
-#ifndef RAY_TRACER_SIMPLE_RENDERING_H
-#define RAY_TRACER_SIMPLE_RENDERING_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -10,26 +9,25 @@ class Renderer {
 public:
     Renderer(uint32_t viewPortWidth, uint32_t viewPortHeight);
 
-    [[nodiscard]] std::shared_ptr<GLFWimage> GetFinalImage() const { return m_FinalImage; }
+    [[nodiscard]] auto GetFinalImage() const -> std::shared_ptr<GLFWimage> { return m_FinalImage; }
 
-    [[nodiscard]] uint32_t* GetData() { return m_ImageData.data(); }
-    [[nodiscard]] uint32_t GetSize() const { return m_ImageData.size(); }
+    [[nodiscard]] auto GetData() -> uint32_t* { return m_ImageData.data(); }
+    [[nodiscard]] auto GetSize() const -> uint32_t { return m_ImageData.size(); }
 
-    [[nodiscard]] uint32_t GetWidth() const { return m_FinalImage->width; }
-    [[nodiscard]] uint32_t GetHeight() const { return m_FinalImage->height; }
+    [[nodiscard]] auto GetWidth() const -> uint32_t { return m_FinalImage->width; }
+    [[nodiscard]] auto GetHeight() const -> uint32_t { return m_FinalImage->height; }
 
-    [[nodiscard]] float GetLastRenderTime() const { return m_LastRenderTime; }
+    [[nodiscard]] auto GetLastRenderTime() const -> float { return m_LastRenderTime; }
 
     void OnResize(uint32_t width, uint32_t height);
     void Render();
-
-private:
-    glm::vec4 PerPixel(glm::vec2 coord);
+    void SetLightDir(float x, float y, float z) { m_LightDir = glm::normalize(glm::vec3(x, y, z)); }
 
 private:
     std::shared_ptr<GLFWimage> m_FinalImage;
     float m_LastRenderTime = 0.0f;
     std::vector<uint32_t> m_ImageData;
-};
+    glm::vec3 m_LightDir = glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f));
 
-#endif
+    auto PerPixel(glm::vec2 coord) const -> glm::vec4;
+};
