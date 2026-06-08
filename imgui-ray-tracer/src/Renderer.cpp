@@ -84,8 +84,13 @@ glm::vec4 Renderer::PerPixel(glm::vec2 coord)
 
     glm::vec3 h0 = rayOrigin + (t0 * rayDirection);
     glm::vec3 closestHit = rayOrigin + (closestT * rayDirection);
+    glm::vec3 normal = glm::normalize(closestHit - sphereCenter);
+
+    glm::vec3 lightDir = glm::normalize(glm::vec3(-1, -1, -1));
+
+    float d = glm::max(glm::dot(normal, -lightDir), 0.0f);
 
     glm::vec3 sphereColor(1, 0, 1);
-    sphereColor = closestHit;
+    sphereColor *= d;
     return {sphereColor, 1.0f};
 }
