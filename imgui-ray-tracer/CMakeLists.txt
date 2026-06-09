@@ -44,7 +44,10 @@ add_executable(imgui_ray_tracer
         src/Application.cpp
         ${IMGUI_SOURCES}
         ${IMGUI_BACKEND_SOURCES}
+        src/Renderer.h
         src/Renderer.cpp
+        src/Camera.h
+        src/Camera.cpp
 )
 
 target_include_directories(imgui_ray_tracer PRIVATE

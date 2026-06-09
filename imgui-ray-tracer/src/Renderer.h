@@ -5,6 +5,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "Camera.h"
+
 class Renderer {
 public:
     Renderer(uint32_t viewPortWidth, uint32_t viewPortHeight);
@@ -20,7 +22,7 @@ public:
     [[nodiscard]] auto GetLastRenderTime() const -> float { return m_LastRenderTime; }
 
     void OnResize(uint32_t width, uint32_t height);
-    void Render();
+    void Render(const Camera& camera);
     void SetLightDir(float x, float y, float z) { m_LightDir = glm::normalize(glm::vec3(x, y, z)); }
 
 private:

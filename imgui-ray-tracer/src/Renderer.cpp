@@ -2,6 +2,8 @@
 #include <chrono>
 #include <utility>
 
+#include "Camera.h"
+
 namespace Utils
 {
     static auto ConvertToRGBA(const glm::vec4 &color) -> uint32_t
@@ -20,7 +22,7 @@ Renderer::Renderer(const uint32_t viewPortWidth, const uint32_t viewPortHeight)
     m_ImageData.resize(static_cast<size_t>(viewPortWidth) * static_cast<size_t>(viewPortHeight));
 }
 
-void Renderer::Render()
+void Renderer::Render(const Camera& camera)
 {
     auto start = std::chrono::high_resolution_clock::now();
 

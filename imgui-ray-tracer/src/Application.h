@@ -3,6 +3,7 @@
 
 #include <GLFW/glfw3.h>
 #include "imgui.h"
+#include "Camera.h"
 
 class Renderer;
 
@@ -11,6 +12,7 @@ public:
     Application();
     ~Application();
     void Run();
+    void SetCamera(const Camera& camera);
 
 private:
     static void GlfwErrorCallback(int error, const char* description);
@@ -30,6 +32,7 @@ private:
     const char* m_GlslVersion = "#version 130";
     float m_ViewPortWidth = 800.0f;
     float m_ViewPortHeight = 600.0f;
+    Camera m_Camera;
 };
 
 #endif

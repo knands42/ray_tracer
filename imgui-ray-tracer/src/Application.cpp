@@ -4,7 +4,8 @@
 #include "imgui_impl_opengl3.h"
 #include <cstdio>
 
-Application::Application()
+Application::Application() :
+    m_Camera(45.0f, 0.1f, 100.0f)
 {
     SetupGlfw();
     SetupImGui();
@@ -122,6 +123,9 @@ void Application::DrawOnUI()
     m_Renderer->SetLightDir(lightDir[0], lightDir[1], lightDir[2]);
     ImGui::End();
 
+    float deltaTime = glfwGetTime();
+    m_Camera.OnUpdate(deltaTime);
+
     ImGui::Begin("Viewport");
     Render();
     auto finalImage = m_Renderer->GetFinalImage();
@@ -135,9 +139,11 @@ void Application::Render()
     m_ViewPortWidth = ImGui::GetContentRegionAvail().x;
     m_ViewPortHeight = ImGui::GetContentRegionAvail().y;
     m_Renderer->OnResize(m_ViewPortWidth, m_ViewPortHeight);
-    m_Renderer->Render();
+    m_Camera.OnResize(m_ViewPortWidth, m_ViewPortHeight);
+    m_Renderer->Render(m_Camera);
     UpdateTexture();
 }
+
 
 void Application::Run()
 {
@@ -158,4 +164,9 @@ void Application::Shutdown()
 
     glfwDestroyWindow(m_Window);
     glfwTerminate();
+}
+
+void Application::SetCamera(const Camera& camera)
+{
+    m_Camera = camera;
 }

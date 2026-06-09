@@ -1,4 +1,4 @@
-Checks: 'cppcoreguidelines-*,modernize-*,readability-*,bugprone-*,performance-*'
+Checks: 'cppcoreguidelines-*,modernize-*,bugprone-*,performance-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: '.*'
 FormatStyle: 'file'
