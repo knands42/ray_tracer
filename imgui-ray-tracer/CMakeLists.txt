@@ -48,6 +48,7 @@ add_executable(imgui_ray_tracer
         src/Renderer.cpp
         src/Camera.h
         src/Camera.cpp
+        ../simple-ray-tracer/src/Material.h
 )
 
 target_include_directories(imgui_ray_tracer PRIVATE

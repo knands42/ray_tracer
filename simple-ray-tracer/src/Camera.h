@@ -1,5 +1,6 @@
 #pragma once
 #include "Color.h"
+#include "Material.h"
 #include "Rtweekend.h"
 #include "Vec3.h"
 
@@ -93,20 +94,25 @@ private:
         return {random_double() - 0.5, random_double() - 0.5, 0};
     }
 
-    static auto ray_color(const Ray &r, int depth, const Hittable &world) -> Color
+    static auto ray_color(const Ray &ray, const int depth, const Hittable &world) -> Color
     {
         if (depth <= 0)
         {
             return {0, 0, 0};
         }
 
-        if (HitRecord hit_rec; world.hit(r, Interval(0.001, infinity), hit_rec))
+        if (HitRecord hitRecord; world.hit(ray, Interval(0.001, infinity), hitRecord))
         {
-            Vec3 direction = hit_rec.normal + random_unit_vector();
-            return 0.3 * ray_color(Ray(hit_rec.point, direction), depth - 1, world);
+            Ray scattered;
+            Color attenuation;
+            if (hitRecord.mat->scatter(ray, hitRecord, attenuation, scattered))
+            {
+                return attenuation * ray_color(scattered, depth - 1, world);
+            }
+            return Color(0,0,0);
         }
 
-        const Vec3 unit_direction = unit_vector(r.direction());
+        const Vec3 unit_direction = unit_vector(ray.direction());
         // Linear interpolation
         // blendedValue=(1−a)⋅startValue+a⋅endValue
         // or

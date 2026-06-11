@@ -53,6 +53,12 @@ public:
         return (e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]);
     }
 
+    [[nodiscard]] auto nearZero() const -> bool
+    {
+        constexpr auto s = 1e-8;
+        return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) && (std::fabs(e[2]) < s);
+    }
+
     static auto random() -> Vec3
     {
         return {random_double(), random_double(), random_double()};
@@ -141,4 +147,10 @@ inline auto random_on_hemisphere(const Vec3 &normalVec) -> Vec3
         return on_unit_sphere;
     }
     return -on_unit_sphere;
+}
+
+// reflected ray direction v+2b
+inline Vec3 reflect(const Vec3& v, const Vec3& n)
+{
+    return v - 2*dot(v,n)*n;
 }
