@@ -49,19 +49,21 @@ private:
 class Metal : public Material
 {
 public:
-    Metal(const Color &albedo) : albedo(albedo)
+    Metal(const Color &albedo, double fuzz) : albedo(albedo), fuzz(fuzz < 1 ? fuzz : 1)
     {
     }
 
     auto scatter(const Ray &rIn, const HitRecord &hitRec, Color &attenuation, Ray &scattered)
     const -> bool override
     {
-        const Vec3 reflected = reflect(rIn.direction(), hitRec.normal);
+        Vec3 reflected = reflect(rIn.direction(), hitRec.normal);
+        reflected = unit_vector(reflected) + (fuzz * random_unit_vector());
         scattered = Ray(hitRec.point, reflected);
         attenuation = albedo;
-        return true;
+        return (dot(scattered.direction(), hitRec.normal) > 0);
     }
 
 private:
     Color albedo;
+    double fuzz;
 };
