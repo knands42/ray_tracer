@@ -2,7 +2,6 @@
 
 #include "Color.h"
 #include "Hittable.h"
-#include "Ray.h"
 
 class HitRecord;
 

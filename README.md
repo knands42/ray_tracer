@@ -37,7 +37,7 @@ Or follow the READMEs in each sub-directory for more specific instructions.
 
 ## Engineering Notes
 
-I maintain a repository of technical findings, optimization strategies, and debugging logs within the `/docs` directory.
+I keep my technical findings, optimization strategies, and debugging logs within the `/docs` directory.
 This is where I document my process and insights gained while developing these rendering engines.
 
 ### About AI

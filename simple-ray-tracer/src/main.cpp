@@ -8,12 +8,10 @@ int main()
 {
     // Camera
     Camera cam;
-
     cam.aspect_ratio = 16.0 / 9.0;
     cam.image_width = 400;
     cam.samples_per_pixel = 10;
     cam.max_depth = 100;
-
 
     // Materials
     auto material_ground = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
